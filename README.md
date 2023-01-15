@@ -1,7 +1,7 @@
 ---
 title: One Shot Talking Face
-emoji: 💻
-colorFrom: green
+emoji: 🦜
+colorFrom: indigo
 colorTo: indigo
 sdk: docker
 pinned: false
