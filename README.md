@@ -1,6 +1,6 @@
 ---
 title: One Shot Talking Face
-emoji: 🗣
+emoji: 🌞
 colorFrom: indigo
 colorTo: indigo
 sdk: docker
