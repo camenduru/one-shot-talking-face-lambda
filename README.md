@@ -2,7 +2,7 @@
 title: One Shot Talking Face
 emoji: 🌞
 colorFrom: blue
-colorTo: yellow
+colorTo: blue
 sdk: docker
 pinned: false
 ---
