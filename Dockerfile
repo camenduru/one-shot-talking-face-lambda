@@ -18,9 +18,7 @@ RUN git clone https://huggingface.co/camenduru/one-shot-talking-face-20.04-t4 on
 RUN mkdir /content/out
 
 COPY app.py /content/app.py
-COPY audio.wav /content/audio.wav
-COPY image.png /content/image.png
-COPY test.json /content/test.json
+COPY examples /content/examples
 
 RUN adduser --disabled-password --gecos '' admin
 RUN adduser admin sudo

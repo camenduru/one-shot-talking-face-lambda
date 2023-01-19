@@ -4,10 +4,24 @@ from PIL import Image
 
 block = gr.Blocks()
 
+def pad_image(image):
+    w, h = image.size
+    if w == h:
+        return image
+    elif w > h:
+        new_image = Image.new(image.mode, (w, w), (0, 0, 0))
+        new_image.paste(image, (0, (w - h) // 2))
+        return new_image
+    else:
+        new_image = Image.new(image.mode, (h, h), (0, 0, 0))
+        new_image.paste(image, ((h - w) // 2, 0))
+        return new_image
+
 def calculate(image_in, audio_in):
     waveform, sample_rate = torchaudio.load(audio_in)
     torchaudio.save("/content/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
     image = Image.open(image_in)
+    image = pad_image(image)
     image.save("image.png")
 
     pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/content/audio.wav'], check=True, capture_output=True)
@@ -33,6 +47,15 @@ def run():
           video_out = gr.Video(show_label=False)
         with gr.Row().style(equal_height=True):
           btn = gr.Button("Generate")          
+
+    examples = gr.Examples(examples=[
+      ["./examples/monalisa.jpg", "./examples/obama2.wav"],
+      ["./examples/monalisa.jpg", "./examples/trump.wav"],
+      ["./examples/o2.jpg", "./examples/obama2.wav"],
+      ["./examples/o2.jpg", "./examples/trump.wav" ],
+      ["./examples/image.png", "./examples/audio.wav"],
+    ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=True)
+
     btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
     block.queue()
     block.launch(server_name="0.0.0.0", server_port=7860)
