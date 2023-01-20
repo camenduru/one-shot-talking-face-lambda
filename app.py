@@ -3,7 +3,7 @@ import os, subprocess, torchaudio
 import torch
 from PIL import Image
 
-block = gr.Blocks(show_progress=False)
+block = gr.Blocks()
 
 def pad_image(image):
     w, h = image.size
@@ -46,7 +46,7 @@ def run():
         with gr.Row().style(equal_height=True):
           image_in = gr.Image(show_label=False, type="filepath")
           audio_in = gr.Audio(show_label=False, type='filepath')
-          video_out = gr.Video(show_label=False)
+          video_out = gr.Video(show_label=False, show_progress=False)
         with gr.Row().style(equal_height=True):
           btn = gr.Button("Generate")          
 
