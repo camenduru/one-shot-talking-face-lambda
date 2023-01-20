@@ -9,7 +9,7 @@ RUN apt-get install -y ffmpeg libavcodec-dev libavformat-dev libavdevice-dev lib
 
 ENV PATH="/home/admin/.local/bin:${PATH}"
 
-RUN pip3 install pandas scipy matplotlib torch torchvision torchaudio gradio==3.13.0 imageio-ffmpeg pocketsphinx jq "numpy<1.24"
+RUN pip3 install pandas scipy matplotlib torch torchvision torchaudio gradio==3.13.0 altair imageio-ffmpeg pocketsphinx jq "numpy<1.24"
 
 RUN git lfs install
 RUN git clone https://huggingface.co/camenduru/pocketsphinx-20.04-t4 pocketsphinx && cd pocketsphinx && cmake --build build --target install
