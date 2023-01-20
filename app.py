@@ -3,7 +3,7 @@ import os, subprocess, torchaudio
 import torch
 from PIL import Image
 
-block = gr.Blocks()
+block = gr.Blocks(show_progress=False)
 
 def pad_image(image):
     w, h = image.size
