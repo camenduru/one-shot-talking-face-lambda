@@ -46,7 +46,7 @@ def run():
         with gr.Row().style(equal_height=True):
           image_in = gr.Image(show_label=False, type="filepath")
           audio_in = gr.Audio(show_label=False, type='filepath')
-          video_out = gr.Video(show_label=False, show_progress=False)
+          video_out = gr.Video(show_label=False)
         with gr.Row().style(equal_height=True):
           btn = gr.Button("Generate")          
 
@@ -58,7 +58,7 @@ def run():
       ["./examples/image.png", "./examples/audio.wav"],
     ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=True)
 
-    btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
+    btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out], show_progress=False)
     block.queue()
     block.launch(server_name="0.0.0.0", server_port=7860)
 
