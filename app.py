@@ -3,11 +3,7 @@ import os, subprocess, torchaudio
 import torch
 from PIL import Image
 
-css = """
-.progress-bar { display:none!important; }
-"""
-
-block = gr.Blocks(css=css)
+block = gr.Blocks()
 
 def pad_image(image):
     w, h = image.size
