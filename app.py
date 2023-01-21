@@ -3,7 +3,11 @@ import os, subprocess, torchaudio
 import torch
 from PIL import Image
 
-block = gr.Blocks()
+css = """
+.progress-bar { display:none!important; }
+"""
+
+block = gr.Blocks(css=css)
 
 def pad_image(image):
     w, h = image.size
@@ -58,7 +62,7 @@ def run():
       ["./examples/image.png", "./examples/audio.wav"],
     ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=True)
 
-    btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out], show_progress=False)
+    btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
     block.queue()
     block.launch(server_name="0.0.0.0", server_port=7860)
 
