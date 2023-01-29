@@ -39,7 +39,7 @@ def run():
     gr.Markdown(
     """
     <style> body { text-align: right} </style>
-    map: 📄 [arxiv](https://arxiv.org/abs/2112.02749) &nbsp; ⇨ 👩‍💻 [github](https://github.com/FuxiVirtualHuman/AAAI22-one-shot-talking-face) &nbsp; ⇨ 🦒 [colab](https://github.com/camenduru/one-shot-talking-face-colab) &nbsp; ⇨ 🤗 [huggingface](https://huggingface.co/spaces/camenduru/one-shot-talking-face) &nbsp; | &nbsp; tools: 🌀 [duplicate this space](https://huggingface.co/spaces/camenduru/sandbox?duplicate=true) &nbsp; | 🐢 [tortoise tts](https://huggingface.co/spaces/mdnestor/tortoise) &nbsp; | 🎨 [text-to-image](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads) &nbsp; | 🐣 [twitter](https://twitter.com/camenduru) &nbsp;
+    map: 📄 [arxiv](https://arxiv.org/abs/2112.02749) &nbsp; ⇨ 👩‍💻 [github](https://github.com/FuxiVirtualHuman/AAAI22-one-shot-talking-face) &nbsp; ⇨ 🦒 [colab](https://github.com/camenduru/one-shot-talking-face-colab) &nbsp; ⇨ 🤗 [huggingface](https://huggingface.co/spaces/camenduru/one-shot-talking-face) &nbsp; | &nbsp; tools: 🌀 [duplicate this space](https://huggingface.co/spaces/camenduru/sandbox?duplicate=true) &nbsp; | 🐢 [tortoise tts](https://huggingface.co/spaces/mdnestor/tortoise) &nbsp; | 📺 [video upscaler](https://huggingface.co/spaces/kadirnar/Anime4k) &nbsp; | 🎨 [text-to-image](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads) &nbsp; | 🐣 [twitter](https://twitter.com/camenduru) &nbsp;
     """)
     with gr.Group():
       with gr.Box():
