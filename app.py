@@ -23,7 +23,7 @@ import os, subprocess, torchaudio
 import torch
 from PIL import Image
 
-block = gr.Blocks()
+block = gr.Blocks(allowed_paths=['/home/demo/source/'])
 
 def pad_image(image):
     w, h = image.size
@@ -71,7 +71,7 @@ def run():
           btn = gr.Button("Generate")          
 
     examples = gr.Examples(examples=[
-      ["https://github.com/camenduru/one-shot-talking-face-colab/blob/main/test/image.png", "/home/demo/source/audio.wav"],
+      ["/home/demo/source/image.png", "/home/demo/source/audio.wav"],
     ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=False)
 
     btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
