@@ -41,18 +41,18 @@ def pad_image(image):
 def calculate(image_in, audio_in):
     waveform, sample_rate = torchaudio.load(audio_in)
     waveform = torch.mean(waveform, dim=0, keepdim=True)
-    torchaudio.save("/content/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
+    torchaudio.save("/home/demo/source/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
     image = Image.open(image_in)
     image = pad_image(image)
     image.save("image.png")
 
-    pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/content/audio.wav'], check=True, capture_output=True)
+    pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/home/demo/source/audio.wav'], check=True, capture_output=True)
     jq_run = subprocess.run(['jq', '[.w[]|{word: (.t | ascii_upcase | sub("<S>"; "sil") | sub("<SIL>"; "sil") | sub("\\\(2\\\)"; "") | sub("\\\(3\\\)"; "") | sub("\\\(4\\\)"; "") | sub("\\\[SPEECH\\\]"; "SIL") | sub("\\\[NOISE\\\]"; "SIL")), phones: [.w[]|{ph: .t | sub("\\\+SPN\\\+"; "SIL") | sub("\\\+NSN\\\+"; "SIL"), bg: (.b*100)|floor, ed: (.b*100+.d*100)|floor}]}]'], input=pocketsphinx_run.stdout, capture_output=True)
     with open("test.json", "w") as f:
         f.write(jq_run.stdout.decode('utf-8').strip())
 
-    os.system(f"cd /content/one-shot-talking-face && python3 -B test_script.py --img_path /content/image.png --audio_path /content/audio.wav --phoneme_path /content/test.json --save_dir /content/train")
-    return "/content/train/image_audio.mp4"
+    os.system(f"cd /home/demo/source/one-shot-talking-face && python3 -B test_script.py --img_path /home/demo/source/image.png --audio_path /home/demo/source/audio.wav --phoneme_path /home/demo/source/test.json --save_dir /home/demo/source/train")
+    return "/home/demo/source/train/image_audio.mp4"
     
 def run():
   with block:
@@ -71,7 +71,7 @@ def run():
           btn = gr.Button("Generate")          
 
     examples = gr.Examples(examples=[
-      ["image.png", "audio.wav"],
+      ["/home/demo/source/image.png", "/home/demo/source/audio.wav"],
     ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=False)
 
     btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
