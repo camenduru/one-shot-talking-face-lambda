@@ -26,17 +26,17 @@ block = gr.Blocks()
 
 def calculate(image_in, audio_in):
     waveform, sample_rate = torchaudio.load(audio_in)
-    torchaudio.save("/content/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
+    torchaudio.save("/home/demo/source/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
     image = Image.open(image_in)
-    image.save("/content/image.png")
+    image.save("/home/demo/source/image.png")
 
-    pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/content/audio.wav'], check=True, capture_output=True)
+    pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/home/demo/source/audio.wav'], check=True, capture_output=True)
     jq_run = subprocess.run(['jq', '[.w[]|{word: (.t | ascii_upcase | sub("<S>"; "sil") | sub("<SIL>"; "sil") | sub("\\\(2\\\)"; "") | sub("\\\(3\\\)"; "") | sub("\\\(4\\\)"; "") | sub("\\\[SPEECH\\\]"; "SIL") | sub("\\\[NOISE\\\]"; "SIL")), phones: [.w[]|{ph: .t | sub("\\\+SPN\\\+"; "SIL") | sub("\\\+NSN\\\+"; "SIL"), bg: (.b*100)|floor, ed: (.b*100+.d*100)|floor}]}]'], input=pocketsphinx_run.stdout, capture_output=True)
-    with open("/content/test.json", "w") as f:
+    with open("/home/demo/source/test.json", "w") as f:
         f.write(jq_run.stdout.decode('utf-8').strip())
 
-    os.system(f"cd /content/one-shot-talking-face && python3 -B test_script.py --img_path /content/image.png --audio_path /content/audio.wav --phoneme_path /content/test.json --save_dir /content/train")
-    return "/content/train/image_audio.mp4"
+    os.system(f"cd /home/demo/source/one-shot-talking-face && python3 -B test_script.py --img_path /home/demo/source/image.png --audio_path /home/demo/source/audio.wav --phoneme_path /home/demo/source/test.json --save_dir /home/demo/source/train")
+    return "/home/demo/source/train/image_audio.mp4"
     
 with block:
   gr.Markdown(
