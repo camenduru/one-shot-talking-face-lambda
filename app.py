@@ -7,7 +7,7 @@ os.system(f"git clone https://huggingface.co/camenduru/pocketsphinx-20.04-a10 po
 os.chdir(f"/home/demo/source/pocketsphinx")
 os.system(f"sudo cmake --build build --target install")
 os.chdir(f"/home/demo/source")
-os.system(f"git clone https://huggingface.co/camenduru/one-shot-talking-face-20.04-t4 one-shot-talking-face")
+os.system(f"git clone https://huggingface.co/camenduru/one-shot-talking-face-20.04-a10 one-shot-talking-face")
 os.chdir(f"/home/demo/source/one-shot-talking-face")
 os.system(f"pip install -r /home/demo/source/one-shot-talking-face/requirements.txt")
 os.system(f"chmod 755 /home/demo/source/one-shot-talking-face/OpenFace/FeatureExtraction")
