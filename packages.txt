@@ -9,3 +9,4 @@ jq
 libdc1394-22-dev
 libraw1394-dev
 libopenblas-base
+pocketsphinx
