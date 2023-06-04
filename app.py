@@ -72,7 +72,7 @@ def run():
 
     examples = gr.Examples(examples=[
       ["/home/demo/source/image.png", "/home/demo/source/audio.wav"],
-    ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=True)
+    ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=False)
 
     btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
     block.queue()
