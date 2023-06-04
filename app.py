@@ -59,7 +59,7 @@ def run():
     gr.Markdown(
     """
     <style> body { text-align: right} </style>
-    map: 📄 [arxiv](https://arxiv.org/abs/2112.02749) &nbsp; ⇨ 👩‍💻 [github](https://github.com/FuxiVirtualHuman/AAAI22-one-shot-talking-face) &nbsp; ⇨ 🦒 [colab](https://github.com/camenduru/one-shot-talking-face-colab) &nbsp; ⇨ 🐝 [lambdalabs](https://cloud.lambdalabs.com/demos/camenduru/one-shot-talking-face) &nbsp; | 🐣 [twitter](https://twitter.com/camenduru) &nbsp;
+    📄 [arxiv](https://arxiv.org/abs/2112.02749) &nbsp; ⇨ 👩‍💻 [github](https://github.com/FuxiVirtualHuman/AAAI22-one-shot-talking-face) &nbsp; ⇨ 🦒 [colab](https://github.com/camenduru/one-shot-talking-face-colab) &nbsp; ⇨ 🐝 [lambdalabs](https://cloud.lambdalabs.com/demos/camenduru/one-shot-talking-face) &nbsp; | 🗣 [tts](elevenlabs.io) &nbsp; | 🐣 [twitter](https://twitter.com/camenduru) &nbsp;
     """)
     with gr.Group():
       with gr.Box():
