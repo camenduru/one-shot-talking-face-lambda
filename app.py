@@ -23,7 +23,7 @@ import os, subprocess, torchaudio
 import torch
 from PIL import Image
 
-block = gr.Blocks(allowed_paths=['/home/demo/source/'])
+block = gr.Blocks()
 
 def pad_image(image):
     w, h = image.size
@@ -76,7 +76,7 @@ def run():
 
     btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
     block.queue()
-    block.launch()
+    block.launch(allowed_paths=['/home/demo/source/'])
 
 if __name__ == "__main__":
     run()
