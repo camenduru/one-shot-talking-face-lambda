@@ -20,37 +20,63 @@ os.system(f"wget https://github.com/camenduru/one-shot-talking-face-colab/blob/m
 
 import gradio as gr
 import os, subprocess, torchaudio
+import torch
 from PIL import Image
 
 block = gr.Blocks()
 
+def pad_image(image):
+    w, h = image.size
+    if w == h:
+        return image
+    elif w > h:
+        new_image = Image.new(image.mode, (w, w), (0, 0, 0))
+        new_image.paste(image, (0, (w - h) // 2))
+        return new_image
+    else:
+        new_image = Image.new(image.mode, (h, h), (0, 0, 0))
+        new_image.paste(image, ((h - w) // 2, 0))
+        return new_image
+
 def calculate(image_in, audio_in):
     waveform, sample_rate = torchaudio.load(audio_in)
-    torchaudio.save("/home/demo/source/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
+    waveform = torch.mean(waveform, dim=0, keepdim=True)
+    torchaudio.save("/content/audio.wav", waveform, sample_rate, encoding="PCM_S", bits_per_sample=16)
     image = Image.open(image_in)
-    image.save("/home/demo/source/image.png")
+    image = pad_image(image)
+    image.save("image.png")
 
-    pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/home/demo/source/audio.wav'], check=True, capture_output=True)
+    pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/content/audio.wav'], check=True, capture_output=True)
     jq_run = subprocess.run(['jq', '[.w[]|{word: (.t | ascii_upcase | sub("<S>"; "sil") | sub("<SIL>"; "sil") | sub("\\\(2\\\)"; "") | sub("\\\(3\\\)"; "") | sub("\\\(4\\\)"; "") | sub("\\\[SPEECH\\\]"; "SIL") | sub("\\\[NOISE\\\]"; "SIL")), phones: [.w[]|{ph: .t | sub("\\\+SPN\\\+"; "SIL") | sub("\\\+NSN\\\+"; "SIL"), bg: (.b*100)|floor, ed: (.b*100+.d*100)|floor}]}]'], input=pocketsphinx_run.stdout, capture_output=True)
-    with open("/home/demo/source/test.json", "w") as f:
+    with open("test.json", "w") as f:
         f.write(jq_run.stdout.decode('utf-8').strip())
 
-    os.system(f"cd /home/demo/source/one-shot-talking-face && python3 -B test_script.py --img_path /home/demo/source/image.png --audio_path /home/demo/source/audio.wav --phoneme_path /home/demo/source/test.json --save_dir /home/demo/source/train")
-    return "/home/demo/source/train/image_audio.mp4"
+    os.system(f"cd /content/one-shot-talking-face && python3 -B test_script.py --img_path /content/image.png --audio_path /content/audio.wav --phoneme_path /content/test.json --save_dir /content/train")
+    return "/content/train/image_audio.mp4"
     
-with block:
-  gr.Markdown(
-  """
-  <style> body { text-align: right} </style>
-  map: 📄 [arxiv](https://arxiv.org/abs/2112.02749) &nbsp; ⇨ 👩‍💻 [github](https://github.com/FuxiVirtualHuman/AAAI22-one-shot-talking-face) &nbsp; ⇨ 🦒 [colab](https://github.com/camenduru/one-shot-talking-face-colab) &nbsp; ⇨ 🐝 [lambdalabs](https://cloud.lambdalabs.com/demos/camenduru/one-shot-talking-face) &nbsp; | 🐢 [tortoise tts](https://huggingface.co/spaces/mdnestor/tortoise) &nbsp; | 🐣 [twitter](https://twitter.com/camenduru) &nbsp;
-  """)
-  with gr.Group():
-    with gr.Box():
-      with gr.Row().style(equal_height=True):
-        image_in = gr.Image(show_label=False, type="filepath")
-        audio_in = gr.Audio(show_label=False, type='filepath')
-        video_out = gr.Video(show_label=False)
-      with gr.Row().style(equal_height=True):
-        btn = gr.Button("Generate")          
-  btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
-  block.launch(debug=True)
+def run():
+  with block:
+    gr.Markdown(
+    """
+    <style> body { text-align: right} </style>
+    map: 📄 [arxiv](https://arxiv.org/abs/2112.02749) &nbsp; ⇨ 👩‍💻 [github](https://github.com/FuxiVirtualHuman/AAAI22-one-shot-talking-face) &nbsp; ⇨ 🦒 [colab](https://github.com/camenduru/one-shot-talking-face-colab) &nbsp; ⇨ 🤗 [huggingface](https://huggingface.co/spaces/camenduru/one-shot-talking-face) &nbsp; | &nbsp; tools: 🌀 [duplicate this space](https://huggingface.co/spaces/camenduru/sandbox?duplicate=true) &nbsp; | 🐢 [tortoise tts](https://huggingface.co/spaces/mdnestor/tortoise) &nbsp; | 📺 [video upscaler](https://huggingface.co/spaces/kadirnar/Anime4k) &nbsp; | 🎨 [text-to-image](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads) &nbsp; | 🐣 [twitter](https://twitter.com/camenduru) &nbsp; | ☕ [buy-a-coffee](https://ko-fi.com/camenduru) &nbsp;
+    """)
+    with gr.Group():
+      with gr.Box():
+        with gr.Row().style(equal_height=True):
+          image_in = gr.Image(show_label=False, type="filepath")
+          audio_in = gr.Audio(show_label=False, type='filepath')
+          video_out = gr.Video(show_label=False)
+        with gr.Row().style(equal_height=True):
+          btn = gr.Button("Generate")          
+
+    examples = gr.Examples(examples=[
+      ["./image.png", "./audio.wav"],
+    ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=True)
+
+    btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
+    block.queue()
+    block.launch()
+
+if __name__ == "__main__":
+    run()
