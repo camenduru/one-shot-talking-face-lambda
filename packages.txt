@@ -1,0 +1,11 @@
+ffmpeg
+libavcodec-dev
+libavformat-dev
+libavdevice-dev
+libgl1
+libgtk2.0-0
+libglib2.0-dev
+jq
+libdc1394-22-dev
+libraw1394-dev
+libopenblas-base
