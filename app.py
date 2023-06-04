@@ -3,7 +3,7 @@ import os
 os.system(f"pip install -q torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 torchtext==0.14.1 torchdata==0.5.1 --extra-index-url https://download.pytorch.org/whl/cu116 -U")
 os.system(f"git lfs install")
 os.chdir(f"/home/demo/source")
-os.system(f"git clone https://huggingface.co/camenduru/pocketsphinx-20.04-t4 pocketsphinx")
+os.system(f"git clone https://huggingface.co/camenduru/pocketsphinx-20.04-a10 pocketsphinx")
 os.chdir(f"/home/demo/source/pocketsphinx")
 os.system(f"sudo cmake --build build --target install")
 os.chdir(f"/home/demo/source")
