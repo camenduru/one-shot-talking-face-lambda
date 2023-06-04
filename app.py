@@ -71,7 +71,7 @@ def run():
           btn = gr.Button("Generate")          
 
     examples = gr.Examples(examples=[
-      ["/home/demo/source/image.png", "/home/demo/source/audio.wav"],
+      ["https://github.com/camenduru/one-shot-talking-face-colab/blob/main/test/image.png", "/home/demo/source/audio.wav"],
     ], fn=calculate, inputs=[image_in, audio_in], outputs=[video_out], cache_examples=False)
 
     btn.click(calculate, inputs=[image_in, audio_in], outputs=[video_out])
