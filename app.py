@@ -48,7 +48,7 @@ def calculate(image_in, audio_in):
 
     pocketsphinx_run = subprocess.run(['pocketsphinx', '-phone_align', 'yes', 'single', '/home/demo/source/audio.wav'], check=True, capture_output=True)
     jq_run = subprocess.run(['jq', '[.w[]|{word: (.t | ascii_upcase | sub("<S>"; "sil") | sub("<SIL>"; "sil") | sub("\\\(2\\\)"; "") | sub("\\\(3\\\)"; "") | sub("\\\(4\\\)"; "") | sub("\\\[SPEECH\\\]"; "SIL") | sub("\\\[NOISE\\\]"; "SIL")), phones: [.w[]|{ph: .t | sub("\\\+SPN\\\+"; "SIL") | sub("\\\+NSN\\\+"; "SIL"), bg: (.b*100)|floor, ed: (.b*100+.d*100)|floor}]}]'], input=pocketsphinx_run.stdout, capture_output=True)
-    with open("test.json", "w") as f:
+    with open("/home/demo/source/test.json", "w") as f:
         f.write(jq_run.stdout.decode('utf-8').strip())
 
     os.system(f"cd /home/demo/source/one-shot-talking-face && python3 -B test_script.py --img_path /home/demo/source/image.png --audio_path /home/demo/source/audio.wav --phoneme_path /home/demo/source/test.json --save_dir /home/demo/source/train")
